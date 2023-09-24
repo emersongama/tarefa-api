@@ -6,13 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tarefa", schema = "public")
+@Table(schema = "public", name = "tarefa")
 @Entity
 @Builder
 public class Tarefa implements Serializable {
@@ -22,9 +24,11 @@ public class Tarefa implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull @NotEmpty
     @Column
     private String titulo;
 
+    @NotNull @NotEmpty
     @Column
     private String descricao;
 

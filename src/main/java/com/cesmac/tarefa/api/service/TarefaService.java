@@ -19,5 +19,5 @@ public interface TarefaService {
 
     List<TarefaDTO> consultarTodas();
 
-    Tarefa buscarPorId(Long id);
+    TarefaDTO buscar(Long id);
 }

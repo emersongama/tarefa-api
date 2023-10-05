@@ -2,9 +2,9 @@ package com.cesmac.tarefa.api.service.impl;
 
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.exception.RecursoNaoEncontradoException;
-import com.cesmac.tarefa.api.exception.RecursoObrigatorioException;
 import com.cesmac.tarefa.api.repository.TarefaRepository;
 import com.cesmac.tarefa.api.service.TarefaService;
+import com.cesmac.tarefa.api.service.impl.validacoes.TarefaValidacoes;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.cesmac.tarefa.api.shared.Constantes.Mensagens.MENSAGEM_TAREFA_NAO_ENCONTRADA;
-import static com.cesmac.tarefa.api.shared.Constantes.Mensagens.MSG_ID_OBRIGATORIO;
 
 @Service
 public class TarefaServiceImpl implements TarefaService {
 
-    private TarefaRepository tarefaRepository;
-    private ModelMapper mapper;
+    private final TarefaRepository tarefaRepository;
+    private final ModelMapper mapper;
 
     public TarefaServiceImpl(TarefaRepository tarefaRepository) {
         this.tarefaRepository = tarefaRepository;
@@ -67,8 +66,7 @@ public class TarefaServiceImpl implements TarefaService {
     }
 
     private Tarefa buscarPorId(Long id) {
-        if (id == null)
-            throw new RecursoObrigatorioException(MSG_ID_OBRIGATORIO);
+        TarefaValidacoes.validarIdTarefa(id);
 
         return this.tarefaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException(MENSAGEM_TAREFA_NAO_ENCONTRADA));

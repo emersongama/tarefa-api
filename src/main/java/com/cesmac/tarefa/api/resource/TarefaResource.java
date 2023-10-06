@@ -36,7 +36,7 @@ public class TarefaResource implements Serializable {
         return ResponseEntity.ok(tarefaAlterada);
     }
 
-    @PostMapping("/concluir/{id}")
+    @PatchMapping("/concluir/{id}")
     public ResponseEntity<Void> concluir(@PathVariable Long id) {
         this.tarefaService.concluir(id);
         return ResponseEntity.noContent().build();

@@ -37,4 +37,7 @@ public class Tarefa implements Serializable {
 
     @Column(name = "data_hora_exclusao")
     private LocalDateTime dataHoraExclusao;
+
+    @Column(name = "data_hora_ultima_alteracao")
+    private LocalDateTime dataHoraUltimaAlteracao;
 }

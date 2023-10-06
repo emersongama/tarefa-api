@@ -55,7 +55,7 @@ public class TarefaServiceImpl implements TarefaService {
 
     @Override
     public List<TarefaDTO> consultarTodas() {
-        List<Tarefa> tarefas = this.tarefaRepository.findAll();
+        List<Tarefa> tarefas = this.tarefaRepository.findAllByDataHoraExclusaoIsNullOrderByDataHoraUltimaAlteracaoDesc();
         return tarefas.stream().map(this::converterParaTarefaDTO).collect(Collectors.toList());
     }
 
@@ -68,7 +68,7 @@ public class TarefaServiceImpl implements TarefaService {
     private Tarefa buscarPorId(Long id) {
         TarefaValidacoes.validarIdTarefa(id);
 
-        return this.tarefaRepository.findById(id)
+        return this.tarefaRepository.findByIdAndDataHoraExclusaoIsNull(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException(MENSAGEM_TAREFA_NAO_ENCONTRADA));
     }
 
@@ -82,6 +82,7 @@ public class TarefaServiceImpl implements TarefaService {
                 .titulo(tarefaDTO.getTitulo())
                 .descricao(tarefaDTO.getDescricao())
                 .dataHoraConclusao(tarefaDTO.getDataHoraConclusao())
+                .dataHoraUltimaAlteracao(LocalDateTime.now())
                 .build();
     }
 }

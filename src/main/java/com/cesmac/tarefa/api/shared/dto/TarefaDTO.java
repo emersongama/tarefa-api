@@ -5,8 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -18,10 +17,10 @@ public class TarefaDTO implements Serializable {
 
     private Long id;
 
-    @NotNull @NotEmpty
+    @NotBlank
     private String titulo;
 
-    @NotNull @NotEmpty
+    @NotBlank
     private String descricao;
 
     private LocalDateTime dataHoraConclusao;

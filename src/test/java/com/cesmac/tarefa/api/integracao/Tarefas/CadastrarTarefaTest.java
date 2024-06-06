@@ -3,6 +3,7 @@ package com.cesmac.tarefa.api.integracao.Tarefas;
 import com.cesmac.tarefa.api.TarefaApiApplication;
 import com.cesmac.tarefa.api.integracao.ContainersAbstractIT;
 import com.cesmac.tarefa.api.integracao.ObjectMapperUtil;
+import com.cesmac.tarefa.api.integracao.dto.EntidadeGenericaTestDTO;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +19,8 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 
 import javax.persistence.EntityManager;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItem;
 
 @Tag("integracao")
 @SpringBootTest(
@@ -60,7 +61,7 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
     @Test
     @DisplayName(
             "Deve testar o cadastro de tarefa, resultado em sucesso, retornando a tarefa cadastrado")
-    public void DeveriaCadastrarNovoUsuarioComSucesso() {
+    public void deveria() {
         TarefaDTO request = new TarefaDTO();
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)
@@ -70,10 +71,31 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
                 .then()
                 .log()
                 .ifValidationFails()
-                .statusCode(HttpStatus.CREATED.value())
-                .body("id", notNullValue())
-                .body("titulo", equalTo(request.getTitulo()))
-                .body("descricao", equalTo(request.getDescricao()))
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("erros", hasSize(2))
+                .body("erros.mensagem", hasItem("O campo titulo deve ser informado;"))
+                .body("erros.mensagem", hasItem("O campo descricao deve ser informado;"))
+                .extract()
+                .response()
+                .prettyPrint();
+    }
+
+    @Test
+    @DisplayName(
+            "Deve testar o cadastro de tarefa, resultado em sucesso, retornando a tarefa cadastrado")
+    public void deveria2() {
+        EntidadeGenericaTestDTO request = new EntidadeGenericaTestDTO();
+        RestAssuredMockMvc.given()
+                .contentType(ContentType.JSON)
+                .body(ObjectMapperUtil.asJsonString(request))
+                .when()
+                .post("/api/tarefa")
+                .then()
+                .log()
+                .ifValidationFails()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("erros", hasSize(1))
+                .body("erros.mensagem", hasItem("O campo nome não é válido."))
                 .extract()
                 .response()
                 .prettyPrint();

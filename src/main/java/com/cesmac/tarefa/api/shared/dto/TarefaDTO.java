@@ -17,9 +17,9 @@ public class TarefaDTO implements Serializable {
 
     private Long id;
 
-    @NotNull @NotEmpty private String titulo;
+    @NotEmpty private String titulo;
 
-    @NotNull @NotEmpty private String descricao;
+    @NotEmpty private String descricao;
 
     private LocalDateTime dataHoraConclusao;
 

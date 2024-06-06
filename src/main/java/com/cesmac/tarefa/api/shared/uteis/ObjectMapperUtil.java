@@ -1,11 +1,10 @@
-package com.cesmac.tarefa.api.integracao;
+package com.cesmac.tarefa.api.shared.uteis;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import java.text.SimpleDateFormat;
 
 public class ObjectMapperUtil {

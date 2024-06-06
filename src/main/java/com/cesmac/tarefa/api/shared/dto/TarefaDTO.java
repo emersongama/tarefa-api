@@ -3,7 +3,6 @@ package com.cesmac.tarefa.api.shared.dto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

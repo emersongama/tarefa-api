@@ -1,11 +1,12 @@
 package com.cesmac.tarefa.api.shared.uteis;
 
 import com.cesmac.tarefa.api.configuration.exceptions.ApiTarefaRuntimeException;
+import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
 import com.cesmac.tarefa.api.exception.RecursoNaoEncontradoException;
 import com.cesmac.tarefa.api.exception.RecursoObrigatorioException;
-import lombok.extern.slf4j.Slf4j;
-
+import com.cesmac.tarefa.api.shared.EValidacao;
 import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ExecutarUtil {
@@ -15,7 +16,8 @@ public class ExecutarUtil {
         try {
             comando.run();
         } catch (RecursoNaoEncontradoException | RecursoObrigatorioException ex) {
-            throw ex;
+            log.warn(ex.getLocalizedMessage());
+            throw new ValidacaoNotFoundException(EValidacao.TARAFA_NAO_LOCALIZADA_POR_ID);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             log.warn(mensagem);
@@ -28,7 +30,8 @@ public class ExecutarUtil {
         try {
             return comando.get();
         } catch (RecursoNaoEncontradoException | RecursoObrigatorioException ex) {
-            throw ex;
+            log.warn(ex.getLocalizedMessage());
+            throw new ValidacaoNotFoundException(EValidacao.TARAFA_NAO_LOCALIZADA_POR_ID);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             log.warn(mensagem);

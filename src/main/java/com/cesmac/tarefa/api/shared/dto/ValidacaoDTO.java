@@ -1,19 +1,15 @@
 package com.cesmac.tarefa.api.shared.dto;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
-public class DetalheErroDTO implements Serializable {
-
-    private Integer status;
-    private String campo;
-    private String mensagem;
-    private Long tempo;
+public class ValidacaoDTO {
+    private String[] codes;
+    private String field;
 }

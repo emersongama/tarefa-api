@@ -2,9 +2,8 @@ package com.cesmac.tarefa.api.service;
 
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public interface TarefaService {

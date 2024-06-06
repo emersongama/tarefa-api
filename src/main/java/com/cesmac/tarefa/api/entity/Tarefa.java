@@ -1,15 +1,14 @@
 package com.cesmac.tarefa.api.entity;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -24,13 +23,9 @@ public class Tarefa implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull @NotEmpty
-    @Column
-    private String titulo;
+    @NotNull @NotEmpty @Column private String titulo;
 
-    @NotNull @NotEmpty
-    @Column
-    private String descricao;
+    @NotNull @NotEmpty @Column private String descricao;
 
     @Column(name = "data_hora_conclusao")
     private LocalDateTime dataHoraConclusao;

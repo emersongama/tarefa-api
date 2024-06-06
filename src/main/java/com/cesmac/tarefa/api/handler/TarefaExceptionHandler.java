@@ -3,6 +3,9 @@ package com.cesmac.tarefa.api.handler;
 import com.cesmac.tarefa.api.exception.RecursoNaoEncontradoException;
 import com.cesmac.tarefa.api.exception.RecursoObrigatorioException;
 import com.cesmac.tarefa.api.shared.dto.DetalheErroDTO;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -10,15 +13,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @ControllerAdvice
 public class TarefaExceptionHandler {
 
     @ExceptionHandler(RecursoNaoEncontradoException.class)
-    public ResponseEntity<DetalheErroDTO> handleRecursoNaoEncontradoException(RecursoNaoEncontradoException ex) {
+    public ResponseEntity<DetalheErroDTO> handleRecursoNaoEncontradoException(
+            RecursoNaoEncontradoException ex) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(httpStatus).body(obterDetalhesErroDTO(ex, httpStatus));
     }
@@ -36,12 +36,13 @@ public class TarefaExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<DetalheErroDTO>> handleValidationErros(MethodArgumentNotValidException ex) {
+    public ResponseEntity<List<DetalheErroDTO>> handleValidationErros(
+            MethodArgumentNotValidException ex) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        List<DetalheErroDTO> listaErros = ex.getBindingResult().getFieldErrors()
-                .stream()
-                .map(campo -> obterDetalhesErroDTO(campo, httpStatus))
-                .collect(Collectors.toList());
+        List<DetalheErroDTO> listaErros =
+                ex.getBindingResult().getFieldErrors().stream()
+                        .map(campo -> obterDetalhesErroDTO(campo, httpStatus))
+                        .collect(Collectors.toList());
         return ResponseEntity.status(httpStatus).body(listaErros);
     }
 

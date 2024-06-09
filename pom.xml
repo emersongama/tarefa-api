@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.cesmac</groupId>
 	<artifactId>tarefa-api</artifactId>
-	<version>1.0.4-202406091340</version>
+	<version>1.0.5-202406091345</version>
 	<name>tarefa-api</name>
 	<description>Demo project for Spring Boot</description>
 

@@ -12,7 +12,7 @@ services:
     networks:
       - api-network
   tarefa-api:
-    image: emersongama5/tarefa-api:1.0.2-202406082230
+    image: emersongama5/tarefa-api:1.0.3-202406091332
     restart: always
     environment:
       TZ: America/Sao_Paulo

@@ -1,4 +1,4 @@
-package com.cesmac.tarefa.api;
+package com.cesmac.tarefa.api.configuration;
 
 import java.io.IOException;
 import javax.servlet.*;

@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  postgres-tarefa-api:
+    image: postgres:13
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      POSTGRES_DB: tarefa
+      POSTGRES_PASSWORD: post
+    ports:
+      - 5432:5432
+    networks:
+      - api-network
+  tarefa-api:
+    #image: emersongama5/tarefa-api:1.0.0-202406081937
+    build: .
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING_PROFILES_ACTIVE: prod,swagger
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-tarefa-api/tarefa
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: post
+    ports:
+      - 8081:8081
+    networks:
+      - api-network
+    links:
+      - postgres-tarefa-api
+    depends_on:
+      - postgres-tarefa-api
+networks:
+  api-network:
+    driver: bridge

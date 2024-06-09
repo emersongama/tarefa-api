@@ -13,7 +13,6 @@ COPY src ./src
 
 # Compila o projeto e executa os testes
 RUN mvn clean install
-#RUN mvn clean install -DskipTests
 
 # Utiliza uma imagem do OpenJDK para executar a aplicação
 FROM openjdk:11-jre-slim

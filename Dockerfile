@@ -3,6 +3,7 @@ FROM maven:3.8.6-openjdk-11-slim AS build
 
 WORKDIR /app
 COPY src ./src
+COPY Dockerfile .
 COPY pom.xml .
 RUN mvn dependency:go-offline
 RUN mvn clean install -DskipTests

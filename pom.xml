@@ -213,37 +213,6 @@
 					</java>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.13</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>tag-latest</id>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-						<configuration>
-							<tag>latest</tag>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<repository>registry.hub.docker.com/emersongama5/${project.artifactId}</repository>
-					<tag>${project.version}</tag>
-					<dockerfile>Dockerfile</dockerfile>
-					<username>emersongama5</username>
-					<password>${env.DOCKER_HUB_TOKEN}</password>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 

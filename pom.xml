@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.cesmac</groupId>
 	<artifactId>tarefa-api</artifactId>
-	<version>1.0.5-202406091345</version>
+	<version>1.0.6-202406112144</version>
 	<name>tarefa-api</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -211,6 +211,36 @@
 							<style>AOSP</style>
 						</googleJavaFormat>
 					</java>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.12</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>tag-latest</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+						<configuration>
+							<tag>latest</tag>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<username>emersongama5</username>
+					<password>${env.DOCKER_HUB_TOKEN}</password>
+					<repository>registry.hub.docker.com/emersongama5/${project.artifactId}</repository>
+					<tag>${project.version}</tag>
 				</configuration>
 			</plugin>
 		</plugins>

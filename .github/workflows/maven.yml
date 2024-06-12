@@ -25,9 +25,4 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5.4.0
       with:
-        image: emersongama5/tarefa-api
-        tags: latest
-        registry: docker.io
         dockerfile: Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}

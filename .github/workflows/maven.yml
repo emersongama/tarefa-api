@@ -22,7 +22,15 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5.4.0
+    - name: login to docker registry
+      uses: docker/login-action@v3
       with:
-        dockerfile: Dockerfile
+        username: emersongama5
+        password: ${{secrets.DOCKERHUB_TOKEN}}
+
+    - name: build and push docker image to registry
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: emersongama5/tarefa-api:latest

@@ -22,6 +22,10 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
 
+    - name: get current pom version of project
+      uses: PERES-Richard/maven-get-version-action@v3.0.0
+      id: obterVersaoPom
+
     - name: login to docker registry
       uses: docker/login-action@v3
       with:
@@ -33,4 +37,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: emersongama5/tarefa-api:latest
+        tags: emersongama5/tarefa-api:latest, emersongama5/tarefa-api:${{ steps.obterVersaoPom.outputs.version }}

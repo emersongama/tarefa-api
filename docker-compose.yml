@@ -16,7 +16,6 @@ services:
     restart: always
     environment:
       TZ: America/Sao_Paulo
-      SPRING_PROFILES_ACTIVE: prod,swagger
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-tarefa-api/tarefa
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: post

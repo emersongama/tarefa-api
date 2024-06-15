@@ -37,4 +37,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: emersongama5/tarefa-api:latest, emersongama5/tarefa-api:$${{ steps.project.outputs.version }}
+        tags: emersongama5/tarefa-api:latest, emersongama5/tarefa-api:${{ steps.project.outputs.version }}

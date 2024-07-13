@@ -23,4 +23,6 @@ public interface GrupoService {
     List<AlunoDTO> consultarAlunosDoGrupo(Long idGrupo);
 
     void vincular(AlunoGrupoDTO dto);
+
+    Grupo buscarPorId(Long id);
 }

@@ -34,6 +34,6 @@ public class Aluno implements Serializable {
     @Column(name = "data_hora_exclusao")
     private LocalDateTime dataHoraExclusao;
 
-    @ManyToMany(mappedBy = "alunos")
+    @ManyToMany(mappedBy = "alunos", fetch = FetchType.LAZY)
     private List<Grupo> grupos;
 }

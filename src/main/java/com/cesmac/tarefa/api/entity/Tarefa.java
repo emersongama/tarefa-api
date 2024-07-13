@@ -23,9 +23,9 @@ public class Tarefa implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull @NotEmpty @Column private String titulo;
+   @Column private String titulo;
 
-    @NotNull @NotEmpty @Column private String descricao;
+   @Column private String descricao;
 
     @Column(name = "data_hora_conclusao")
     private LocalDateTime dataHoraConclusao;
@@ -36,7 +36,6 @@ public class Tarefa implements Serializable {
     @Column(name = "data_hora_ultima_alteracao")
     private LocalDateTime dataHoraUltimaAlteracao;
 
-    @NotNull
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_grupo")
     private Grupo grupo;

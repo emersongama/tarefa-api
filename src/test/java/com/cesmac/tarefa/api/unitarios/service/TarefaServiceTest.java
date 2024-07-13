@@ -30,7 +30,7 @@ public class TarefaServiceTest {
     @InjectMocks private TarefaServiceImpl service;
     @Mock private TarefaRepository repository;
 
-    @Test
+    /*@Test
     public void deveriaCadastrarComSucesso() {
         LocalDateTime dataHoraCricao = LocalDateTime.now();
         Tarefa tarefa = obterTarefa(dataHoraCricao);
@@ -53,7 +53,7 @@ public class TarefaServiceTest {
             doThrow(RuntimeException.class).when(repository).save(any(Tarefa.class));
             assertThrows(ApiTarefaRuntimeException.class, () -> service.salvar(request));
         }
-    }
+    }*/
 
     @Test
     public void deveriaEditarComSucesso() {

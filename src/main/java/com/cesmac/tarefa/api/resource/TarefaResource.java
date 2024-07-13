@@ -5,11 +5,13 @@ import static com.cesmac.tarefa.api.shared.Constantes.URI.URI_TAREFA;
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.service.TarefaService;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +23,9 @@ public class TarefaResource implements Serializable {
 
     private final TarefaService tarefaService;
 
-    @PostMapping
-    public ResponseEntity<Tarefa> salvar(@Valid @RequestBody TarefaDTO dto)
-            throws URISyntaxException {
-        Tarefa tarefaSalva = this.tarefaService.salvar(dto);
-        return ResponseEntity.created(new URI(URI_TAREFA + "/" + tarefaSalva.getId()))
-                .body(tarefaSalva);
+    @PostMapping("/grupo/{idGrupo}")
+    public ResponseEntity<TarefaDTO> salvar(@Valid @RequestBody TarefaDTO dto, @PathVariable Long idGrupo) {
+        return ResponseEntity.ok(this.tarefaService.salvar(dto, idGrupo));
     }
 
     @PutMapping("/{id}")

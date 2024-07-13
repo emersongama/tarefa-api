@@ -17,9 +17,12 @@ import com.cesmac.tarefa.api.shared.dto.AlunoGrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import com.cesmac.tarefa.api.shared.parse.AlunoParse;
 import com.cesmac.tarefa.api.shared.parse.GrupoParse;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.cesmac.tarefa.api.shared.parse.TarefaParse;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -76,9 +79,7 @@ public class GrupoServiceImpl implements GrupoService {
                 () -> {
                     List<Grupo> grupos =
                             this.grupoRepository.findAllByDataHoraExclusaoIsNullOrderByNome();
-                    return grupos.stream()
-                            .map(this::converterParaGrupoDTO)
-                            .collect(Collectors.toList());
+                    return new GrupoParse().converterListaDTO(grupos);
                 },
                 "Erro ao listar grupo");
     }
@@ -88,12 +89,14 @@ public class GrupoServiceImpl implements GrupoService {
         return executarComandoComTratamentoErroComMensagem(
                 () -> {
                     Grupo grupoConsultada = buscarPorId(id);
-                    return converterParaGrupoDTO(grupoConsultada);
+                    GrupoDTO retorno = new GrupoParse().converterParaDTO(grupoConsultada);
+                    retorno.setAlunos(consultarAlunosDoGrupo(id));
+                    return retorno;
                 },
                 "Erro ao buscar grupo");
     }
 
-    private Grupo buscarPorId(Long id) {
+    public Grupo buscarPorId(Long id) {
         validarIdGrupo(id);
 
         return this.grupoRepository
@@ -126,14 +129,6 @@ public class GrupoServiceImpl implements GrupoService {
                     this.grupoRepository.save(grupo);
                 },
                 "Erro ao vincular aluno no grupo");
-    }
-
-    private GrupoDTO converterParaGrupoDTO(Grupo grupo) {
-        return GrupoDTO.builder()
-                .id(grupo.getId())
-                .nome(grupo.getNome())
-                .alunos(new AlunoParse().converterListaParaDTO(grupo.getAlunos()))
-                .build();
     }
 
     private AlunoDTO converterParaAlunoDTO(Aluno aluno) {

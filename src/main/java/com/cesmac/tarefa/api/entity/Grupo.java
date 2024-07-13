@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,6 +39,10 @@ public class Grupo implements Serializable {
             joinColumns = {@JoinColumn(name = "id_grupo", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "id_aluno", referencedColumnName = "id")})
     private List<Aluno> alunos;
+
+    @OneToMany(mappedBy = "grupo", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"grupo"})
+    private List<Tarefa> tarefas;
 
     @Column(name = "data_hora_exclusao")
     private LocalDateTime dataHoraExclusao;

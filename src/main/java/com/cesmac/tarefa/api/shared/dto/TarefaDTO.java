@@ -23,4 +23,6 @@ public class TarefaDTO implements Serializable {
     private LocalDateTime dataHoraConclusao;
 
     private LocalDateTime dataHoraUltimaAlteracao;
+
+    private GrupoDTO grupo;
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface TarefaService {
 
-    Tarefa salvar(TarefaDTO tarefa);
+    TarefaDTO salvar(TarefaDTO tarefa, Long idGrupo);
 
     Tarefa alterar(TarefaDTO tarefa, Long id);
 

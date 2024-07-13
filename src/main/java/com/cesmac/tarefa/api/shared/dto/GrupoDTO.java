@@ -19,4 +19,6 @@ public class GrupoDTO implements Serializable {
     @NotEmpty private String nome;
 
     List<AlunoDTO> alunos;
+
+    List<TarefaDTO> tarefas;
 }

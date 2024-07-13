@@ -69,7 +69,7 @@ public class GrupoServiceImpl implements GrupoService {
         return executarComandoComTratamentoErroComMensagem(
                 () -> {
                     List<Grupo> grupos =
-                            this.grupoRepository.findAllOrderByNome();
+                            this.grupoRepository.findAllByDataHoraExclusaoIsNullOrderByNome();
                     return grupos.stream()
                             .map(this::converterParaGrupoDTO)
                             .collect(Collectors.toList());
@@ -91,7 +91,7 @@ public class GrupoServiceImpl implements GrupoService {
         validarIdGrupo(id);
 
         return this.grupoRepository
-                .findById(id)
+                .findAllByIdAndDataHoraExclusaoIsNull(id)
                 .orElseThrow(
                         () -> new RecursoNaoEncontradoException(MENSAGEM_GRUPO_NAO_ENCONTRADO));
     }

@@ -10,6 +10,7 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,7 +19,7 @@ import java.util.List;
 @Data
 @Builder
 @Table(schema = "public", name = "grupo")
-public class Equipe implements Serializable {
+public class Grupo implements Serializable {
 
     @Id
     @Column
@@ -40,4 +41,7 @@ public class Equipe implements Serializable {
                     @JoinColumn(name = "id_aluno", referencedColumnName = "id")
             })
     private List<Aluno> alunos;
+
+    @Column(name = "data_hora_exclusao")
+    private LocalDateTime dataHoraExclusao;
 }

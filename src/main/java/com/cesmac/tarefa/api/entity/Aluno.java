@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,4 +34,7 @@ public class Aluno implements Serializable {
 
     @NotNull
     private String genero;
+
+    @ManyToMany(mappedBy = "alunos")
+    private List<Grupo> grupos;
 }

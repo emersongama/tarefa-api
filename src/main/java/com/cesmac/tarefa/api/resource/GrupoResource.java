@@ -3,6 +3,7 @@ package com.cesmac.tarefa.api.resource;
 import com.cesmac.tarefa.api.entity.Aluno;
 import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.service.GrupoService;
+import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,7 @@ public class GrupoResource implements Serializable {
     }
 
     @GetMapping("/alunos-grupo/{idGrupo}")
-    public ResponseEntity<List<Aluno>> consultarAlunosDoGrupo(@PathVariable Long idGrupo) {
+    public ResponseEntity<List<AlunoDTO>> consultarAlunosDoGrupo(@PathVariable Long idGrupo) {
         return ResponseEntity.ok(grupoService.consultarAlunosDoGrupo(idGrupo));
     }
 }

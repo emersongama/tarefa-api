@@ -5,6 +5,7 @@ import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.exception.RecursoNaoEncontradoException;
 import com.cesmac.tarefa.api.repository.GrupoRepository;
 import com.cesmac.tarefa.api.service.GrupoService;
+import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import com.cesmac.tarefa.api.shared.parse.GrupoParse;
 import org.modelmapper.ModelMapper;
@@ -96,18 +97,22 @@ public class GrupoServiceImpl implements GrupoService {
     }
 
     @Override
-    public List<Aluno> consultarAlunosDoGrupo(Long idGrupo) {
+    public List<AlunoDTO> consultarAlunosDoGrupo(Long idGrupo) {
         return executarComandoComTratamentoErroComMensagem(
                 () -> {
-                    return this.grupoRepository.listarAlunosDoGrupo(idGrupo);
-//                    return listaAlunos.stream()
-//                            .map(this::converterParaGrupoDTO)
-//                            .collect(Collectors.toList());
+                    List<Aluno> listaAlunos = this.grupoRepository.listarAlunosDoGrupo(idGrupo);
+                    return listaAlunos.stream()
+                            .map(this::converterParaAlunoDTO)
+                            .collect(Collectors.toList());
                 },
                 "Erro ao listar alunos do grupo");
     }
 
     private GrupoDTO converterParaGrupoDTO(Grupo grupo) {
         return this.mapper.map(grupo, GrupoDTO.class);
+    }
+
+    private AlunoDTO converterParaAlunoDTO(Aluno aluno) {
+        return this.mapper.map(aluno, AlunoDTO.class);
     }
 }

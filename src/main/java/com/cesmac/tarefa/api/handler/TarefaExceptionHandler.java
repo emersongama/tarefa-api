@@ -47,8 +47,7 @@ public class TarefaExceptionHandler {
     }
 
     private DetalheErroDTO obterDetalhesErroDTO(Exception ex, HttpStatus httpStatus) {
-        return DetalheErroDTO
-                .builder()
+        return DetalheErroDTO.builder()
                 .campo(ex.getClass().getSimpleName())
                 .mensagem(ex.getMessage())
                 .status(httpStatus.value())
@@ -57,8 +56,7 @@ public class TarefaExceptionHandler {
     }
 
     private DetalheErroDTO obterDetalhesErroDTO(FieldError campo, HttpStatus httpStatus) {
-        return DetalheErroDTO
-                .builder()
+        return DetalheErroDTO.builder()
                 .campo(campo.getField())
                 .mensagem(campo.getDefaultMessage())
                 .status(httpStatus.value())

@@ -13,8 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
         webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class TarefaApiApplicationTests extends ContainersAbstractIT {
 
-    @Autowired
-    private WebApplicationContext webApplicationContextSetup;
+    @Autowired private WebApplicationContext webApplicationContextSetup;
 
     @BeforeEach
     void init() {

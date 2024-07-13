@@ -1,15 +1,14 @@
 package com.cesmac.tarefa.api.entity;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,21 +23,13 @@ public class Aluno implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column
-    private String nome;
+    @NotNull @Column private String nome;
 
-    @NotNull
-    @Column
-    private Integer idade;
+    @NotNull @Column private Integer idade;
 
-    @NotNull
-    @Column
-    private String matricula;
+    @NotNull @Column private String matricula;
 
-    @NotNull
-    @Column
-    private String genero;
+    @NotNull @Column private String genero;
 
     @Column(name = "data_hora_exclusao")
     private LocalDateTime dataHoraExclusao;

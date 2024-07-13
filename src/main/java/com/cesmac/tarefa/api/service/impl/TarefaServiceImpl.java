@@ -1,12 +1,10 @@
 package com.cesmac.tarefa.api.service.impl;
 
 import static com.cesmac.tarefa.api.service.impl.validacoes.TarefaValidacoes.validarIdTarefa;
-import static com.cesmac.tarefa.api.shared.Constantes.Mensagens.MENSAGEM_TAREFA_NAO_ENCONTRADA;
 import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.*;
 
 import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
 import com.cesmac.tarefa.api.entity.Tarefa;
-import com.cesmac.tarefa.api.exception.RecursoNaoEncontradoException;
 import com.cesmac.tarefa.api.repository.TarefaRepository;
 import com.cesmac.tarefa.api.service.TarefaService;
 import com.cesmac.tarefa.api.shared.EValidacao;
@@ -103,7 +101,9 @@ public class TarefaServiceImpl implements TarefaService {
         return this.tarefaRepository
                 .findByIdAndDataHoraExclusaoIsNull(id)
                 .orElseThrow(
-                        () -> new ValidacaoNotFoundException(EValidacao.TARAFA_NAO_LOCALIZADA_POR_ID));
+                        () ->
+                                new ValidacaoNotFoundException(
+                                        EValidacao.TARAFA_NAO_LOCALIZADA_POR_ID));
     }
 
     private TarefaDTO converterParaTarefaDTO(Tarefa tarefa) {

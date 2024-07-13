@@ -1,21 +1,20 @@
 package com.cesmac.tarefa.api.resource;
 
-import com.cesmac.tarefa.api.entity.Aluno;
+import static com.cesmac.tarefa.api.shared.Constantes.URI.URI_GRUPO;
+
 import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.service.GrupoService;
 import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
+import com.cesmac.tarefa.api.shared.dto.AlunoGrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-
-import static com.cesmac.tarefa.api.shared.Constantes.URI.URI_GRUPO;
+import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(URI_GRUPO)
@@ -33,8 +32,7 @@ public class GrupoResource implements Serializable {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Grupo> alterar(
-            @Valid @RequestBody GrupoDTO dto, @PathVariable Long id) {
+    public ResponseEntity<Grupo> alterar(@Valid @RequestBody GrupoDTO dto, @PathVariable Long id) {
         Grupo grupoAlterado = this.grupoService.alterar(dto, id);
         return ResponseEntity.ok(grupoAlterado);
     }
@@ -58,5 +56,11 @@ public class GrupoResource implements Serializable {
     @GetMapping("/alunos/{idGrupo}")
     public ResponseEntity<List<AlunoDTO>> consultarAlunosDoGrupo(@PathVariable Long idGrupo) {
         return ResponseEntity.ok(grupoService.consultarAlunosDoGrupo(idGrupo));
+    }
+
+    @PostMapping("/vincular")
+    public ResponseEntity<Void> vincularAluno(@Valid @RequestBody AlunoGrupoDTO dto) {
+        this.grupoService.vincular(dto);
+        return ResponseEntity.noContent().build();
     }
 }

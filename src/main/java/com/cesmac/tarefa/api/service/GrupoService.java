@@ -1,12 +1,11 @@
 package com.cesmac.tarefa.api.service;
 
-import com.cesmac.tarefa.api.entity.Aluno;
 import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
+import com.cesmac.tarefa.api.shared.dto.AlunoGrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public interface GrupoService {
@@ -22,4 +21,6 @@ public interface GrupoService {
     GrupoDTO buscar(Long id);
 
     List<AlunoDTO> consultarAlunosDoGrupo(Long idGrupo);
+
+    void vincular(AlunoGrupoDTO dto);
 }

@@ -17,11 +17,14 @@ public class ContainersAbstractIT {
     private static final PostgreSQLContainer<?> postgresContainer;
 
     static {
-        postgresContainer = new PostgreSQLContainer<>(
-                DockerImageName.parse(System.getenv("IMAGEM_POSTGRES") != null
-                                ? System.getenv("IMAGEM_POSTGRES") : "postgres:13")
-                        .asCompatibleSubstituteFor("postgres"))
-                .withExposedPorts(POSTGRES_PORT);
+        postgresContainer =
+                new PostgreSQLContainer<>(
+                                DockerImageName.parse(
+                                                System.getenv("IMAGEM_POSTGRES") != null
+                                                        ? System.getenv("IMAGEM_POSTGRES")
+                                                        : "postgres:13")
+                                        .asCompatibleSubstituteFor("postgres"))
+                        .withExposedPorts(POSTGRES_PORT);
 
         postgresContainer.getPortBindings().add(POSTGRES_PORT + ":" + POSTGRES_PORT);
 
@@ -33,13 +36,14 @@ public class ContainersAbstractIT {
         System.setProperty("spring.datasource.username", postgresContainer.getUsername());
         System.setProperty("spring.datasource.password", postgresContainer.getPassword());
 
-        Flyway flyway = Flyway.configure()
-                .dataSource(
-                        postgresContainer.getJdbcUrl(),
-                        postgresContainer.getUsername(),
-                        postgresContainer.getPassword())
-                .locations("seeds/migration_integration_test")
-                .load();
+        Flyway flyway =
+                Flyway.configure()
+                        .dataSource(
+                                postgresContainer.getJdbcUrl(),
+                                postgresContainer.getUsername(),
+                                postgresContainer.getPassword())
+                        .locations("seeds/migration_integration_test")
+                        .load();
 
         flyway.migrate();
     }

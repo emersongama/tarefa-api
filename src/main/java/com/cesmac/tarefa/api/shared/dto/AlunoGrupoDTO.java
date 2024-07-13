@@ -1,8 +1,7 @@
 package com.cesmac.tarefa.api.shared.dto;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class GrupoDTO implements Serializable {
+public class AlunoGrupoDTO implements Serializable {
 
-    private Long id;
-
-    @NotEmpty private String nome;
-
-    List<AlunoDTO> alunos;
+    @NotNull private Long idAluno;
+    @NotNull private Long idGrupo;
 }

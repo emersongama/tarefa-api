@@ -1,12 +1,15 @@
 package com.cesmac.tarefa.api.service.impl;
 
+import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
 import com.cesmac.tarefa.api.entity.Aluno;
 import com.cesmac.tarefa.api.exception.RecursoNaoEncontradoException;
 import com.cesmac.tarefa.api.repository.AlunoRepository;
 import com.cesmac.tarefa.api.service.AlunoService;
+import com.cesmac.tarefa.api.shared.EValidacao;
 import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
 import com.cesmac.tarefa.api.shared.parse.AlunoParse;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.ValidationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -54,9 +57,9 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public void excluir(Long id) {
         executarComandoComTratamentoSemRetornoComMensagem(() -> {
-            Aluno alunoConsultado = buscarPorId(id);
-            alunoConsultado.setDataHoraExclusao(LocalDateTime.now());
-            this.alunoRepository.save(alunoConsultado);
+            Aluno aluno = buscarPorId(id);
+            aluno.setDataHoraExclusao(LocalDateTime.now());
+            this.alunoRepository.save(aluno);
         }, "Erro ao excluir aluno");
     }
 
@@ -82,7 +85,7 @@ public class AlunoServiceImpl implements AlunoService {
         validarIdAluno(id);
         return this.alunoRepository
                 .findByIdAndDataHoraExclusaoIsNull(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException(MENSAGEM_ALUNO_NAO_ENCONTRADO));
+                .orElseThrow(() -> new ValidacaoNotFoundException(EValidacao.ALUNO_NAO_LOCALIZADA_POR_ID));
     }
 
     private AlunoDTO converterParaAlunoDTO(Aluno aluno) {

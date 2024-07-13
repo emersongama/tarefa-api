@@ -55,7 +55,7 @@ public class GrupoResource implements Serializable {
         return ResponseEntity.ok(grupoService.buscar(id));
     }
 
-    @GetMapping("/alunos-grupo/{idGrupo}")
+    @GetMapping("/alunos/{idGrupo}")
     public ResponseEntity<List<AlunoDTO>> consultarAlunosDoGrupo(@PathVariable Long idGrupo) {
         return ResponseEntity.ok(grupoService.consultarAlunosDoGrupo(idGrupo));
     }

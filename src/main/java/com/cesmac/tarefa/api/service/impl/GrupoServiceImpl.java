@@ -1,16 +1,20 @@
 package com.cesmac.tarefa.api.service.impl;
 
+import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
 import com.cesmac.tarefa.api.entity.Aluno;
 import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.exception.RecursoNaoEncontradoException;
 import com.cesmac.tarefa.api.repository.GrupoRepository;
 import com.cesmac.tarefa.api.service.GrupoService;
+import com.cesmac.tarefa.api.shared.EValidacao;
 import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import com.cesmac.tarefa.api.shared.parse.GrupoParse;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +63,7 @@ public class GrupoServiceImpl implements GrupoService {
         executarComandoComTratamentoSemRetornoComMensagem(
                 () -> {
                     Grupo grupoConsultada = buscarPorId(id);
+                    grupoConsultada.setDataHoraExclusao(LocalDateTime.now());
                     this.grupoRepository.save(grupoConsultada);
                 },
                 "Erro ao excluir grupo");
@@ -93,7 +98,7 @@ public class GrupoServiceImpl implements GrupoService {
         return this.grupoRepository
                 .findAllByIdAndDataHoraExclusaoIsNull(id)
                 .orElseThrow(
-                        () -> new RecursoNaoEncontradoException(MENSAGEM_GRUPO_NAO_ENCONTRADO));
+                        () -> new ValidacaoNotFoundException(EValidacao.GRUPO_NAO_LOCALIZADA_POR_ID));
     }
 
     @Override

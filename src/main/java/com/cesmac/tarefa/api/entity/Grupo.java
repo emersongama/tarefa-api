@@ -34,7 +34,7 @@ public class Grupo implements Serializable {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.ALL})
     @JoinTable(
-            schema = "pubic",
+            schema = "public",
             name = "alunos_grupos",
             joinColumns = {@JoinColumn(name = "id_grupo", referencedColumnName = "id")},
             inverseJoinColumns = {

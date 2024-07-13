@@ -15,9 +15,9 @@ public class ExecutarUtil {
             Runnable comando, String mensagem) {
         try {
             comando.run();
-        } catch (RecursoNaoEncontradoException | RecursoObrigatorioException ex) {
+        } catch (ValidacaoNotFoundException ex) {
             log.warn(ex.getLocalizedMessage());
-            throw new ValidacaoNotFoundException(EValidacao.TARAFA_NAO_LOCALIZADA_POR_ID);
+            throw ex;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             log.warn(mensagem);
@@ -29,9 +29,9 @@ public class ExecutarUtil {
             Supplier<T> comando, String mensagem) {
         try {
             return comando.get();
-        } catch (RecursoNaoEncontradoException | RecursoObrigatorioException ex) {
+        } catch (ValidacaoNotFoundException ex) {
             log.warn(ex.getLocalizedMessage());
-            throw new ValidacaoNotFoundException(EValidacao.TARAFA_NAO_LOCALIZADA_POR_ID);
+            throw ex;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             log.warn(mensagem);

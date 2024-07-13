@@ -35,4 +35,9 @@ public class Tarefa implements Serializable {
 
     @Column(name = "data_hora_ultima_alteracao")
     private LocalDateTime dataHoraUltimaAlteracao;
+
+    @NotNull
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "id_equipe")
+    private Equipe equipe;
 }

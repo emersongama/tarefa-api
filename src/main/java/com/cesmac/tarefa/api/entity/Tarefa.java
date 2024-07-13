@@ -38,6 +38,6 @@ public class Tarefa implements Serializable {
 
     @NotNull
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "id_equipe")
+    @JoinColumn(name = "id_grupo")
     private Equipe equipe;
 }

@@ -10,6 +10,7 @@ public enum EValidacao implements IEnumLabel<EValidacao> {
     TARAFA_NAO_LOCALIZADA_POR_ID(-3),
     ALUNO_NAO_LOCALIZADA_POR_ID(-4),
     GRUPO_NAO_LOCALIZADA_POR_ID(-5),
+    ALUNO_POSSUI_GRUPO_ATIVO(-6),
     NAO_IDENTIFICADO(-999);
     private final Integer codigo;
 

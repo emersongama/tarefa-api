@@ -95,7 +95,8 @@ public class AlunoServiceImpl implements AlunoService {
                 .buscar(id)
                 .orElseThrow(() -> new ValidacaoNotFoundException(EValidacao.ALUNO_NAO_LOCALIZADA_POR_ID));
     }
-    private void validarExclusao(Aluno aluno) {
 
+    private void validarExclusao(Aluno aluno) {
+        if (!aluno.getGrupos().isEmpty()) throw new ValidacaoNotFoundException(EValidacao.ALUNO_POSSUI_GRUPO_ATIVO);
     }
 }

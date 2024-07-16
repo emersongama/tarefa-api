@@ -1,12 +1,14 @@
 package com.cesmac.tarefa.api.shared.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -25,4 +27,6 @@ public class AlunoDTO {
     private String matricula;
 
     @NotBlank private String genero;
+
+    private Set<TarefaDTO> tarefas;
 }

@@ -1,21 +1,22 @@
 package com.cesmac.tarefa.api.entity;
 
+import lombok.*;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Objects;
 
+
+@Entity
+@Table(schema = "public", name = "aluno")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Data
 @Builder
-@Table(schema = "public", name = "aluno")
 public class Aluno implements Serializable {
 
     @Id
@@ -36,4 +37,17 @@ public class Aluno implements Serializable {
 
     @ManyToMany(mappedBy = "alunos", fetch = FetchType.LAZY)
     private List<Grupo> grupos;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aluno aluno = (Aluno) o;
+        return Objects.equals(id, aluno.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

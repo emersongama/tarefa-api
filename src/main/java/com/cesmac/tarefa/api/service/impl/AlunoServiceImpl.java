@@ -1,9 +1,5 @@
 package com.cesmac.tarefa.api.service.impl;
 
-import static com.cesmac.tarefa.api.service.impl.validacoes.AlunoValidacoes.validarIdAluno;
-import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoErroComMensagem;
-import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoSemRetornoComMensagem;
-
 import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
 import com.cesmac.tarefa.api.entity.Aluno;
 import com.cesmac.tarefa.api.repository.AlunoRepository;
@@ -11,22 +7,26 @@ import com.cesmac.tarefa.api.service.AlunoService;
 import com.cesmac.tarefa.api.shared.EValidacao;
 import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
 import com.cesmac.tarefa.api.shared.parse.AlunoParse;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+
+import static com.cesmac.tarefa.api.service.impl.validacoes.AlunoValidacoes.validarIdAluno;
+import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoErroComMensagem;
+import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoSemRetornoComMensagem;
 
 @Service
 public class AlunoServiceImpl implements AlunoService {
 
     private final AlunoRepository alunoRepository;
-    private final ModelMapper mapper;
+    private final AlunoParse alunoParse;
 
     public AlunoServiceImpl(AlunoRepository alunoRepository) {
         this.alunoRepository = alunoRepository;
-        this.mapper = new ModelMapper();
+        this.alunoParse = new AlunoParse();
     }
 
     @Transactional
@@ -60,6 +60,7 @@ public class AlunoServiceImpl implements AlunoService {
         executarComandoComTratamentoSemRetornoComMensagem(
                 () -> {
                     Aluno aluno = buscarPorId(id);
+                    validarExclusao(aluno);
                     aluno.setDataHoraExclusao(LocalDateTime.now());
                     this.alunoRepository.save(aluno);
                 },
@@ -72,7 +73,7 @@ public class AlunoServiceImpl implements AlunoService {
                 () -> {
                     List<Aluno> tarefas = this.alunoRepository.findAllByDataHoraExclusaoIsNull();
                     return tarefas.stream()
-                            .map(this::converterParaAlunoDTO)
+                            .map(this.alunoParse::converterParaDTO)
                             .collect(Collectors.toList());
                 },
                 "Erro ao listar Aluno");
@@ -83,7 +84,7 @@ public class AlunoServiceImpl implements AlunoService {
         return executarComandoComTratamentoErroComMensagem(
                 () -> {
                     Aluno alunoConsultado = buscarPorId(id);
-                    return converterParaAlunoDTO(alunoConsultado);
+                    return this.alunoParse.converterParaDTOComTarefas(alunoConsultado);
                 },
                 "Erro ao buscar Aluno");
     }
@@ -91,14 +92,10 @@ public class AlunoServiceImpl implements AlunoService {
     public Aluno buscarPorId(Long id) {
         validarIdAluno(id);
         return this.alunoRepository
-                .findByIdAndDataHoraExclusaoIsNull(id)
-                .orElseThrow(
-                        () ->
-                                new ValidacaoNotFoundException(
-                                        EValidacao.ALUNO_NAO_LOCALIZADA_POR_ID));
+                .buscar(id)
+                .orElseThrow(() -> new ValidacaoNotFoundException(EValidacao.ALUNO_NAO_LOCALIZADA_POR_ID));
     }
+    private void validarExclusao(Aluno aluno) {
 
-    private AlunoDTO converterParaAlunoDTO(Aluno aluno) {
-        return this.mapper.map(aluno, AlunoDTO.class);
     }
 }

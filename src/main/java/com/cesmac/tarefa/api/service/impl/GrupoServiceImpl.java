@@ -137,6 +137,7 @@ public class GrupoServiceImpl implements GrupoService {
         executarComandoComTratamentoSemRetornoComMensagem(() -> {
             Grupo grupo = buscarPorId(alunoGrupoDTO.getIdGrupo());
             Aluno aluno = this.alunoService.buscarPorId(alunoGrupoDTO.getIdAluno());
+            validarExclusaoVinculo(grupo, aluno);
             grupo.getAlunos().remove(aluno);
             this.grupoRepository.save(grupo);
         }, "Erro ao desvincular aluno no grupo");
@@ -144,5 +145,9 @@ public class GrupoServiceImpl implements GrupoService {
 
     private AlunoDTO converterParaAlunoDTO(Aluno aluno) {
         return this.mapper.map(aluno, AlunoDTO.class);
+    }
+
+    private void validarExclusaoVinculo(Grupo grupo, Aluno aluno) {
+        if (!grupo.getAlunos().contains(aluno)) throw new ValidacaoNotFoundException(EValidacao.ALUNO_NAO_LOCALIZADO_GRUPO);
     }
 }

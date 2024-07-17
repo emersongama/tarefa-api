@@ -12,6 +12,6 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     Optional<Aluno> findByIdAndDataHoraExclusaoIsNull(Long id);
 
-    @Query("select a from Aluno a join fetch a.grupos g join g.tarefas where a.id = :id and a.dataHoraExclusao is null")
+    @Query("select a from Aluno a left join fetch a.grupos g left join g.tarefas where a.id = :id and a.dataHoraExclusao is null")
     Optional<Aluno> buscar(Long id);
 }

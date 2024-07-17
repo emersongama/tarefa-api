@@ -1,5 +1,6 @@
 package com.cesmac.tarefa.api.shared.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +29,6 @@ public class AlunoDTO {
 
     @NotBlank private String genero;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<TarefaDTO> tarefas;
 }

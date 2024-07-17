@@ -96,6 +96,7 @@ public class GrupoServiceImpl implements GrupoService {
                 "Erro ao buscar grupo");
     }
 
+    @Override
     public Grupo buscarPorId(Long id) {
         validarIdGrupo(id);
 
@@ -129,6 +130,16 @@ public class GrupoServiceImpl implements GrupoService {
                     this.grupoRepository.save(grupo);
                 },
                 "Erro ao vincular aluno no grupo");
+    }
+
+    @Override
+    public void desvincular(AlunoGrupoDTO alunoGrupoDTO) {
+        executarComandoComTratamentoSemRetornoComMensagem(() -> {
+            Grupo grupo = buscarPorId(alunoGrupoDTO.getIdGrupo());
+            Aluno aluno = this.alunoService.buscarPorId(alunoGrupoDTO.getIdAluno());
+            grupo.getAlunos().remove(aluno);
+            this.grupoRepository.save(grupo);
+        }, "Erro ao desvincular aluno no grupo");
     }
 
     private AlunoDTO converterParaAlunoDTO(Aluno aluno) {

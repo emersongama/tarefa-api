@@ -63,4 +63,10 @@ public class GrupoResource implements Serializable {
         this.grupoService.vincular(dto);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/desvincular")
+    public ResponseEntity<Void> desvincularAluno(@Valid @RequestBody AlunoGrupoDTO alunoGrupoDTO) {
+        this.grupoService.desvincular(alunoGrupoDTO);
+        return ResponseEntity.noContent().build();
+    }
 }

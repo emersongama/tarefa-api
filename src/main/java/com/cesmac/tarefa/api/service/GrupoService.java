@@ -25,4 +25,6 @@ public interface GrupoService {
     void vincular(AlunoGrupoDTO dto);
 
     Grupo buscarPorId(Long id);
+
+    void desvincular(AlunoGrupoDTO alunoGrupoDTO);
 }

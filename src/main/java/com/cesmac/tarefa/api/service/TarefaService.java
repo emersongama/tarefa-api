@@ -19,4 +19,6 @@ public interface TarefaService {
     List<TarefaDTO> consultarTodas();
 
     TarefaDTO buscar(Long id);
+
+    List<TarefaDTO> consultarTarefasPorGrupo(Long idGrupo);
 }

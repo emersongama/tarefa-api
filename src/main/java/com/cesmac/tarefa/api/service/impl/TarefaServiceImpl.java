@@ -101,6 +101,18 @@ public class TarefaServiceImpl implements TarefaService {
                 "Erro ao buscar tarefa");
     }
 
+    @Override
+    public List<TarefaDTO> consultarTarefasPorGrupo(Long idGrupo) {
+        return executarComandoComTratamentoErroComMensagem(
+                () -> {
+                    List<Tarefa> tarefas = this.tarefaRepository.findAllByGrupoId(idGrupo);
+                    return tarefas.stream()
+                            .map(this::converterParaTarefaDTO)
+                            .collect(Collectors.toList());
+                },
+                "Erro ao listar tarefas por grupo");
+    }
+
     private Tarefa buscarPorId(Long id) {
         validarIdTarefa(id);
         return this.tarefaRepository

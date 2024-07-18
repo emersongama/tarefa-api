@@ -12,4 +12,6 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     List<Tarefa> findAllByDataHoraExclusaoIsNullOrderByDataHoraUltimaAlteracaoDesc();
 
     Optional<Tarefa> findByIdAndDataHoraExclusaoIsNull(Long id);
+
+    List<Tarefa> findAllByGrupoId(Long id);
 }

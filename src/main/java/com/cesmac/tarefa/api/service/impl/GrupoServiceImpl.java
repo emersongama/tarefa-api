@@ -11,18 +11,18 @@ import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.repository.GrupoRepository;
 import com.cesmac.tarefa.api.service.AlunoService;
 import com.cesmac.tarefa.api.service.GrupoService;
+import com.cesmac.tarefa.api.service.TarefaService;
 import com.cesmac.tarefa.api.shared.EValidacao;
 import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
 import com.cesmac.tarefa.api.shared.dto.AlunoGrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
-import com.cesmac.tarefa.api.shared.parse.AlunoParse;
+import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
 import com.cesmac.tarefa.api.shared.parse.GrupoParse;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.cesmac.tarefa.api.shared.parse.TarefaParse;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +31,13 @@ public class GrupoServiceImpl implements GrupoService {
 
     private final GrupoRepository grupoRepository;
     private final AlunoService alunoService;
+    private final TarefaService tarefaService;
     private final ModelMapper mapper;
 
-    public GrupoServiceImpl(GrupoRepository grupoRepository, AlunoService alunoService) {
+    public GrupoServiceImpl(GrupoRepository grupoRepository, AlunoService alunoService, TarefaService tarefaService) {
         this.grupoRepository = grupoRepository;
         this.alunoService = alunoService;
+        this.tarefaService = tarefaService;
         this.mapper = new ModelMapper();
     }
 
@@ -67,6 +69,9 @@ public class GrupoServiceImpl implements GrupoService {
         executarComandoComTratamentoSemRetornoComMensagem(
                 () -> {
                     Grupo grupoConsultada = buscarPorId(id);
+
+                    validarExclusaoGrupo(consultarAlunosDoGrupo(id), this.tarefaService.consultarTarefasPorGrupo(id));
+
                     grupoConsultada.setDataHoraExclusao(LocalDateTime.now());
                     this.grupoRepository.save(grupoConsultada);
                 },
@@ -149,5 +154,10 @@ public class GrupoServiceImpl implements GrupoService {
 
     private void validarExclusaoVinculo(Grupo grupo, Aluno aluno) {
         if (!grupo.getAlunos().contains(aluno)) throw new ValidacaoNotFoundException(EValidacao.ALUNO_NAO_LOCALIZADO_GRUPO);
+    }
+
+    private void validarExclusaoGrupo(List<AlunoDTO> listaAlunos, List<TarefaDTO> listaTarefas) {
+        if (!listaAlunos.isEmpty()) throw new ValidacaoNotFoundException(EValidacao.GRUPO_POSSUI_ALUNOS_ASSOCIADOS);
+        if (!listaTarefas.isEmpty()) throw new ValidacaoNotFoundException(EValidacao.GRUPO_POSSUI_TAREFAS_ASSOCIADOS);
     }
 }

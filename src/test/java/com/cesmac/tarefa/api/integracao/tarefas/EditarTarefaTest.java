@@ -37,8 +37,11 @@ public class EditarTarefaTest extends ContainersAbstractIT {
 
     @Test
     @DisplayName("Deve editar uma tarefa, resultado em sucesso, retornando a tarefa editada")
-    @Sql({"/seeds/scripts/base.sql"})
-    @Sql({"/seeds/scripts/insert_tarefas.sql"})
+    @Sql({
+        "/seeds/scripts/base.sql",
+        "/seeds/scripts/insert_grupos.sql",
+        "/seeds/scripts/insert_tarefas.sql"
+    })
     public void deveriaEditarNovaTarefaComSucesso() {
         TarefaDTO request = tarefaRequest();
         RestAssuredMockMvc.given()
@@ -101,8 +104,11 @@ public class EditarTarefaTest extends ContainersAbstractIT {
 
     @Test
     @DisplayName("Deve retornar validação de tarefa não localizada na edição de tarefa")
-    @Sql({"/seeds/scripts/base.sql"})
-    @Sql({"/seeds/scripts/insert_tarefas.sql"})
+    @Sql({
+        "/seeds/scripts/base.sql",
+        "/seeds/scripts/insert_grupos.sql",
+        "/seeds/scripts/insert_tarefas.sql"
+    })
     public void deveValidarTarefaNaoLocalizadaNaEdicaoDeTarefa() {
         TarefaDTO request = tarefaRequest();
         RestAssuredMockMvc.given()

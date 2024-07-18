@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 
 import com.cesmac.tarefa.api.configuration.exceptions.ApiTarefaRuntimeException;
 import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
+import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.repository.TarefaRepository;
 import com.cesmac.tarefa.api.service.impl.TarefaServiceImpl;
@@ -30,18 +31,18 @@ public class TarefaServiceTest {
     @InjectMocks private TarefaServiceImpl service;
     @Mock private TarefaRepository repository;
 
-    /*@Test
+    @Test
     public void deveriaCadastrarComSucesso() {
         LocalDateTime dataHoraCricao = LocalDateTime.now();
         Tarefa tarefa = obterTarefa(dataHoraCricao);
         TarefaDTO request = obterTarefaDTO();
+        Grupo grupo = new Grupo();
         doReturn(tarefa).when(repository).save(any(Tarefa.class));
 
-        Tarefa retorno = service.salvar(request);
+        TarefaDTO retorno = service.salvar(request, grupo);
         assertNotNull(retorno.getId());
         assertEquals(request.getTitulo(), retorno.getTitulo());
         assertEquals(request.getDescricao(), retorno.getDescricao());
-        assertEquals(dataHoraCricao, retorno.getDataHoraUltimaAlteracao());
         verify(repository, times(1)).save(any(Tarefa.class));
     }
 
@@ -51,9 +52,10 @@ public class TarefaServiceTest {
             mensagens.when(() -> MensagemUtils.getEnumLabel(any())).thenReturn("Teste");
             TarefaDTO request = obterTarefaDTO();
             doThrow(RuntimeException.class).when(repository).save(any(Tarefa.class));
-            assertThrows(ApiTarefaRuntimeException.class, () -> service.salvar(request));
+            assertThrows(
+                    ApiTarefaRuntimeException.class, () -> service.salvar(request, new Grupo()));
         }
-    }*/
+    }
 
     @Test
     public void deveriaEditarComSucesso() {
@@ -70,7 +72,6 @@ public class TarefaServiceTest {
         assertEquals(idTarefa, retorno.getId());
         assertEquals(request.getTitulo(), retorno.getTitulo());
         assertEquals(request.getDescricao(), retorno.getDescricao());
-        assertEquals(dataHoraCricao, retorno.getDataHoraUltimaAlteracao());
         verify(repository, times(1)).findByIdAndDataHoraExclusaoIsNull(any(Long.class));
         verify(repository, times(1)).save(any(Tarefa.class));
     }

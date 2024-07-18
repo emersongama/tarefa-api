@@ -15,6 +15,8 @@ public interface GrupoRepository extends JpaRepository<Grupo, Long> {
 
     Optional<Grupo> findAllByIdAndDataHoraExclusaoIsNull(Long id);
 
-    @Query(value = "SELECT a FROM Aluno a JOIN a.grupos g WHERE g.id = :idGrupo and a.dataHoraExclusao is null")
+    @Query(
+            value =
+                    "SELECT a FROM Aluno a JOIN a.grupos g WHERE g.id = :idGrupo and a.dataHoraExclusao is null")
     List<Aluno> listarAlunosDoGrupo(Long idGrupo);
 }

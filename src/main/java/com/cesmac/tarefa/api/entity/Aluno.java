@@ -1,14 +1,12 @@
 package com.cesmac.tarefa.api.entity;
 
-import lombok.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import lombok.*;
 
 @Entity
 @Table(schema = "public", name = "aluno")

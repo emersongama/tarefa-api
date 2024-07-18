@@ -1,5 +1,7 @@
 package com.cesmac.tarefa.api.shared.parse;
 
+import static java.util.Objects.nonNull;
+
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
 import java.time.LocalDateTime;
@@ -24,7 +26,11 @@ public class TarefaParse {
                 .descricao(tarefa.getDescricao())
                 .dataHoraConclusao(tarefa.getDataHoraConclusao())
                 .dataHoraUltimaAlteracao(LocalDateTime.now())
-                .grupo(new GrupoParse().converterParaDTOSemAlunosTarefas(tarefa.getGrupo()))
+                .grupo(
+                        nonNull(tarefa.getGrupo())
+                                ? new GrupoParse()
+                                        .converterParaDTOSemAlunosTarefas(tarefa.getGrupo())
+                                : null)
                 .build();
     }
 
@@ -38,7 +44,7 @@ public class TarefaParse {
                 .build();
     }
 
-    public List<TarefaDTO> converterListaParaDTO(List<Tarefa> tarefas){
+    public List<TarefaDTO> converterListaParaDTO(List<Tarefa> tarefas) {
         return tarefas.stream().map(this::converterParaDTOSemGrupo).collect(Collectors.toList());
     }
 }

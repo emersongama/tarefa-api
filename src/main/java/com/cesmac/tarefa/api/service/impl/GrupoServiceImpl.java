@@ -18,11 +18,9 @@ import com.cesmac.tarefa.api.shared.dto.AlunoGrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
 import com.cesmac.tarefa.api.shared.parse.GrupoParse;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +32,10 @@ public class GrupoServiceImpl implements GrupoService {
     private final TarefaService tarefaService;
     private final ModelMapper mapper;
 
-    public GrupoServiceImpl(GrupoRepository grupoRepository, AlunoService alunoService, TarefaService tarefaService) {
+    public GrupoServiceImpl(
+            GrupoRepository grupoRepository,
+            AlunoService alunoService,
+            TarefaService tarefaService) {
         this.grupoRepository = grupoRepository;
         this.alunoService = alunoService;
         this.tarefaService = tarefaService;
@@ -70,7 +71,9 @@ public class GrupoServiceImpl implements GrupoService {
                 () -> {
                     Grupo grupoConsultada = buscarPorId(id);
 
-                    validarExclusaoGrupo(consultarAlunosDoGrupo(id), this.tarefaService.consultarTarefasPorGrupo(id));
+                    validarExclusaoGrupo(
+                            consultarAlunosDoGrupo(id),
+                            this.tarefaService.consultarTarefasPorGrupo(id));
 
                     grupoConsultada.setDataHoraExclusao(LocalDateTime.now());
                     this.grupoRepository.save(grupoConsultada);
@@ -139,13 +142,15 @@ public class GrupoServiceImpl implements GrupoService {
 
     @Override
     public void desvincular(AlunoGrupoDTO alunoGrupoDTO) {
-        executarComandoComTratamentoSemRetornoComMensagem(() -> {
-            Grupo grupo = buscarPorId(alunoGrupoDTO.getIdGrupo());
-            Aluno aluno = this.alunoService.buscarPorId(alunoGrupoDTO.getIdAluno());
-            validarExclusaoVinculo(grupo, aluno);
-            grupo.getAlunos().remove(aluno);
-            this.grupoRepository.save(grupo);
-        }, "Erro ao desvincular aluno no grupo");
+        executarComandoComTratamentoSemRetornoComMensagem(
+                () -> {
+                    Grupo grupo = buscarPorId(alunoGrupoDTO.getIdGrupo());
+                    Aluno aluno = this.alunoService.buscarPorId(alunoGrupoDTO.getIdAluno());
+                    validarExclusaoVinculo(grupo, aluno);
+                    grupo.getAlunos().remove(aluno);
+                    this.grupoRepository.save(grupo);
+                },
+                "Erro ao desvincular aluno no grupo");
     }
 
     private AlunoDTO converterParaAlunoDTO(Aluno aluno) {
@@ -153,11 +158,14 @@ public class GrupoServiceImpl implements GrupoService {
     }
 
     private void validarExclusaoVinculo(Grupo grupo, Aluno aluno) {
-        if (!grupo.getAlunos().contains(aluno)) throw new ValidacaoNotFoundException(EValidacao.ALUNO_NAO_LOCALIZADO_GRUPO);
+        if (!grupo.getAlunos().contains(aluno))
+            throw new ValidacaoNotFoundException(EValidacao.ALUNO_NAO_LOCALIZADO_GRUPO);
     }
 
     private void validarExclusaoGrupo(List<AlunoDTO> listaAlunos, List<TarefaDTO> listaTarefas) {
-        if (!listaAlunos.isEmpty()) throw new ValidacaoNotFoundException(EValidacao.GRUPO_POSSUI_ALUNOS_ASSOCIADOS);
-        if (!listaTarefas.isEmpty()) throw new ValidacaoNotFoundException(EValidacao.GRUPO_POSSUI_TAREFAS_ASSOCIADOS);
+        if (!listaAlunos.isEmpty())
+            throw new ValidacaoNotFoundException(EValidacao.GRUPO_POSSUI_ALUNOS_ASSOCIADOS);
+        if (!listaTarefas.isEmpty())
+            throw new ValidacaoNotFoundException(EValidacao.GRUPO_POSSUI_TAREFAS_ASSOCIADOS);
     }
 }

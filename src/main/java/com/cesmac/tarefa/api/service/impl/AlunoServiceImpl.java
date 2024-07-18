@@ -1,5 +1,9 @@
 package com.cesmac.tarefa.api.service.impl;
 
+import static com.cesmac.tarefa.api.service.impl.validacoes.AlunoValidacoes.validarIdAluno;
+import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoErroComMensagem;
+import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoSemRetornoComMensagem;
+
 import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
 import com.cesmac.tarefa.api.entity.Aluno;
 import com.cesmac.tarefa.api.repository.AlunoRepository;
@@ -7,16 +11,11 @@ import com.cesmac.tarefa.api.service.AlunoService;
 import com.cesmac.tarefa.api.shared.EValidacao;
 import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
 import com.cesmac.tarefa.api.shared.parse.AlunoParse;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.cesmac.tarefa.api.service.impl.validacoes.AlunoValidacoes.validarIdAluno;
-import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoErroComMensagem;
-import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoSemRetornoComMensagem;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AlunoServiceImpl implements AlunoService {
@@ -93,10 +92,14 @@ public class AlunoServiceImpl implements AlunoService {
         validarIdAluno(id);
         return this.alunoRepository
                 .buscar(id)
-                .orElseThrow(() -> new ValidacaoNotFoundException(EValidacao.ALUNO_NAO_LOCALIZADA_POR_ID));
+                .orElseThrow(
+                        () ->
+                                new ValidacaoNotFoundException(
+                                        EValidacao.ALUNO_NAO_LOCALIZADA_POR_ID));
     }
 
     private void validarExclusao(Aluno aluno) {
-        if (!aluno.getGrupos().isEmpty()) throw new ValidacaoNotFoundException(EValidacao.ALUNO_POSSUI_GRUPO_ATIVO);
+        if (!aluno.getGrupos().isEmpty())
+            throw new ValidacaoNotFoundException(EValidacao.ALUNO_POSSUI_GRUPO_ATIVO);
     }
 }

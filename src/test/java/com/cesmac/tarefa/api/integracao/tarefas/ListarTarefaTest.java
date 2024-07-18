@@ -34,8 +34,11 @@ public class ListarTarefaTest extends ContainersAbstractIT {
 
     @Test
     @DisplayName("Deve busca a tarefa por id")
-    @Sql({"/seeds/scripts/base.sql"})
-    @Sql({"/seeds/scripts/insert_tarefas.sql"})
+    @Sql({
+        "/seeds/scripts/base.sql",
+        "/seeds/scripts/insert_grupos.sql",
+        "/seeds/scripts/insert_tarefas.sql"
+    })
     public void deveriaBuscarTarefaPorIdComSucesso() {
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)
@@ -58,8 +61,11 @@ public class ListarTarefaTest extends ContainersAbstractIT {
 
     @Test
     @DisplayName("Deve retornar validação de tarefa não localizada na busca de tarefa por id")
-    @Sql({"/seeds/scripts/base.sql"})
-    @Sql({"/seeds/scripts/insert_tarefas.sql"})
+    @Sql({
+        "/seeds/scripts/base.sql",
+        "/seeds/scripts/insert_grupos.sql",
+        "/seeds/scripts/insert_tarefas.sql"
+    })
     public void deveValidarTarefaNaoLocalizadaAoBuscarTarefaPorID() {
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)

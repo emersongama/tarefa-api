@@ -1,1 +1,2 @@
-delete from public.tarefa
+delete from tarefa
+delete from grupo

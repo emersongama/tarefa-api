@@ -39,14 +39,14 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
     @Test
     @DisplayName(
             "Deve testar o cadastro de tarefa, resultado em sucesso, retornando a tarefa cadastrado")
-    @Sql({"/seeds/scripts/base.sql"})
+    @Sql({"/seeds/scripts/base.sql", "/seeds/scripts/insert_grupos.sql"})
     public void deveriaCadastrarNovaTarefaComSucesso() {
         TarefaDTO request = tarefaRequest();
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)
                 .body(ObjectMapperUtil.asJsonString(request))
                 .when()
-                .post("/api/tarefa")
+                .post("/api/tarefa/grupo/1")
                 .then()
                 .log()
                 .ifValidationFails()
@@ -67,7 +67,7 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
                 .contentType(ContentType.JSON)
                 .body(ObjectMapperUtil.asJsonString(request))
                 .when()
-                .post("/api/tarefa")
+                .post("/api/tarefa/grupo/1")
                 .then()
                 .log()
                 .ifValidationFails()
@@ -88,7 +88,7 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
                 .contentType(ContentType.JSON)
                 .body(ObjectMapperUtil.asJsonString(request))
                 .when()
-                .post("/api/tarefa")
+                .post("/api/tarefa/grupo/1")
                 .then()
                 .log()
                 .ifValidationFails()

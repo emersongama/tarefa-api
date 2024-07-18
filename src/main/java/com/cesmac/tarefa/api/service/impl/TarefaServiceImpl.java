@@ -4,9 +4,9 @@ import static com.cesmac.tarefa.api.service.impl.validacoes.TarefaValidacoes.val
 import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.*;
 
 import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
+import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.repository.TarefaRepository;
-import com.cesmac.tarefa.api.service.GrupoService;
 import com.cesmac.tarefa.api.service.TarefaService;
 import com.cesmac.tarefa.api.shared.EValidacao;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
@@ -21,23 +21,20 @@ import org.springframework.stereotype.Service;
 public class TarefaServiceImpl implements TarefaService {
 
     private final TarefaRepository tarefaRepository;
-
-    private final GrupoService grupoService;
     private final ModelMapper mapper;
 
-    public TarefaServiceImpl(TarefaRepository tarefaRepository, GrupoService grupoService) {
+    public TarefaServiceImpl(TarefaRepository tarefaRepository) {
         this.tarefaRepository = tarefaRepository;
-        this.grupoService = grupoService;
         this.mapper = new ModelMapper();
     }
 
     @Override
-    public TarefaDTO salvar(TarefaDTO tarefaDTO, Long idGrupo) {
+    public TarefaDTO salvar(TarefaDTO tarefaDTO, Grupo grupo) {
         return executarComandoComTratamentoErroComMensagem(
                 () -> {
                     tarefaDTO.setId(null);
                     Tarefa tarefa = new TarefaParse().converterParaEntidade(tarefaDTO);
-                    tarefa.setGrupo(grupoService.buscarPorId(idGrupo));
+                    tarefa.setGrupo(grupo);
                     return new TarefaParse().converterParaDTO(this.tarefaRepository.save(tarefa));
                 },
                 "Erro ao cadastrar tarefa");
@@ -48,9 +45,10 @@ public class TarefaServiceImpl implements TarefaService {
         return executarComandoComTratamentoErroComMensagem(
                 () -> {
                     Tarefa tarefaConsultada = buscarPorId(id);
-                    tarefaDTO.setId(tarefaConsultada.getId());
-                    return this.tarefaRepository.save(
-                            new TarefaParse().converterParaEntidade(tarefaDTO));
+                    tarefaConsultada.setDescricao(tarefaDTO.getDescricao());
+                    tarefaConsultada.setTitulo(tarefaDTO.getTitulo());
+                    tarefaConsultada.setDataHoraUltimaAlteracao(LocalDateTime.now());
+                    return this.tarefaRepository.save(tarefaConsultada);
                 },
                 "Erro ao alterar tarefa");
     }
@@ -124,6 +122,6 @@ public class TarefaServiceImpl implements TarefaService {
     }
 
     private TarefaDTO converterParaTarefaDTO(Tarefa tarefa) {
-        return this.mapper.map(tarefa, TarefaDTO.class);
+        return new TarefaParse().converterParaDTO(tarefa);
     }
 }

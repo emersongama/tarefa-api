@@ -4,7 +4,6 @@ import com.cesmac.tarefa.api.entity.Aluno;
 import com.cesmac.tarefa.api.shared.dto.AlunoDTO;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +19,7 @@ public class AlunoParse {
                 .matricula(alunoDTO.getMatricula())
                 .build();
     }
+
     public AlunoDTO converterParaDTO(Aluno aluno) {
         return AlunoDTO.builder()
                 .id(aluno.getId())
@@ -33,9 +33,10 @@ public class AlunoParse {
     public AlunoDTO converterParaDTOComTarefas(Aluno aluno) {
         Set<TarefaDTO> tarefas = new HashSet<>();
         if (!aluno.getGrupos().isEmpty()) {
-            List<GrupoDTO> grupos = aluno.getGrupos().stream()
-                    .map(grupo -> new GrupoParse().converterParaDTO(grupo))
-                    .collect(Collectors.toList());
+            List<GrupoDTO> grupos =
+                    aluno.getGrupos().stream()
+                            .map(grupo -> new GrupoParse().converterParaDTO(grupo))
+                            .collect(Collectors.toList());
 
             for (GrupoDTO grupo : grupos) {
                 grupo.getTarefas().forEach(tarefas::add);
@@ -52,7 +53,7 @@ public class AlunoParse {
                 .build();
     }
 
-    public List<AlunoDTO> converterListaParaDTO(List<Aluno> alunoDTOS){
+    public List<AlunoDTO> converterListaParaDTO(List<Aluno> alunoDTOS) {
         return alunoDTOS.stream().map(this::converterParaDTO).collect(Collectors.toList());
     }
 }

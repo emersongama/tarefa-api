@@ -63,6 +63,7 @@ public class TokenProvider {
         claims.put("id_usuario", usuarioSistema.getUsuario().getId());
         claims.put("nome_usuario", usuarioSistema.getUsuario().getNome());
         claims.put("login_usuario", usuarioSistema.getUsuario().getLogin());
+        claims.put("permissoes", retornarPermissoesComcatenadas(authentication));
         return claims;
     }
 
@@ -70,5 +71,11 @@ public class TokenProvider {
         long agora = (new Date()).getTime();
         long validadeTokenEmMilissegundos = 1000 * 86400;
         return new Date(agora + validadeTokenEmMilissegundos);
+    }
+
+    private String retornarPermissoesComcatenadas(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
     }
 }

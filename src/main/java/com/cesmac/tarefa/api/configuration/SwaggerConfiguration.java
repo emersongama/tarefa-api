@@ -11,9 +11,14 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 
@@ -37,7 +42,8 @@ public class SwaggerConfiguration {
                 .build()
                 .useDefaultResponseMessages(false)
                 .genericModelSubstitutes(ResponseEntity.class)
-                .securitySchemes(singletonList(obterTokenAcesso()))
+                .securitySchemes(singletonList(apiKey()))
+                .securityContexts(singletonList(securityContext()))
                 .apiInfo(obterInformacoesApi());
     }
 
@@ -48,7 +54,18 @@ public class SwaggerConfiguration {
                 .build();
     }
 
-    private ApiKey obterTokenAcesso() {
-        return new ApiKey("Bearer", "Authorization", "Header");
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", "Authorization", "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder().securityReferences(autenticacaoJWT()).build();
+    }
+
+    private List<SecurityReference> autenticacaoJWT() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "Acesso Total");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return singletonList(new SecurityReference("JWT", authorizationScopes));
     }
 }

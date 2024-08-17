@@ -1,23 +1,13 @@
 package com.cesmac.tarefa.api.unitarios.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 import com.cesmac.tarefa.api.configuration.exceptions.ApiTarefaRuntimeException;
 import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
-import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.repository.TarefaRepository;
 import com.cesmac.tarefa.api.service.impl.TarefaServiceImpl;
+import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
 import com.cesmac.tarefa.api.shared.uteis.MensagemUtils;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,6 +15,17 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TarefaServiceTest {
@@ -36,10 +37,9 @@ public class TarefaServiceTest {
         LocalDateTime dataHoraCricao = LocalDateTime.now();
         Tarefa tarefa = obterTarefa(dataHoraCricao);
         TarefaDTO request = obterTarefaDTO();
-        Grupo grupo = new Grupo();
         doReturn(tarefa).when(repository).save(any(Tarefa.class));
 
-        TarefaDTO retorno = service.salvar(request, grupo);
+        TarefaDTO retorno = service.salvar(request);
         assertNotNull(retorno.getId());
         assertEquals(request.getTitulo(), retorno.getTitulo());
         assertEquals(request.getDescricao(), retorno.getDescricao());
@@ -53,7 +53,7 @@ public class TarefaServiceTest {
             TarefaDTO request = obterTarefaDTO();
             doThrow(RuntimeException.class).when(repository).save(any(Tarefa.class));
             assertThrows(
-                    ApiTarefaRuntimeException.class, () -> service.salvar(request, new Grupo()));
+                    ApiTarefaRuntimeException.class, () -> service.salvar(request));
         }
     }
 
@@ -283,6 +283,7 @@ public class TarefaServiceTest {
         return TarefaDTO.builder()
                 .titulo(tarefa.getTitulo())
                 .descricao(tarefa.getDescricao())
+                .grupo(GrupoDTO.builder().id(1L).build())
                 .build();
     }
 }

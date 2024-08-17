@@ -2,8 +2,10 @@ package com.cesmac.tarefa.api.unitarios.service;
 
 import com.cesmac.tarefa.api.configuration.exceptions.ApiTarefaRuntimeException;
 import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
+import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.repository.TarefaRepository;
+import com.cesmac.tarefa.api.service.impl.GrupoServiceImpl;
 import com.cesmac.tarefa.api.service.impl.TarefaServiceImpl;
 import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
@@ -29,14 +31,19 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TarefaServiceTest {
+
     @InjectMocks private TarefaServiceImpl service;
     @Mock private TarefaRepository repository;
+    @Mock private GrupoServiceImpl grupoService;
 
     @Test
     public void deveriaCadastrarComSucesso() {
         LocalDateTime dataHoraCricao = LocalDateTime.now();
         Tarefa tarefa = obterTarefa(dataHoraCricao);
         TarefaDTO request = obterTarefaDTO();
+        Grupo grupo = Grupo.builder().id(1L).build();
+
+        doReturn(grupo).when(grupoService).buscarPorId(any(Long.class));
         doReturn(tarefa).when(repository).save(any(Tarefa.class));
 
         TarefaDTO retorno = service.salvar(request);

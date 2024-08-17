@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.hasItem;
 import com.cesmac.tarefa.api.TarefaApiApplication;
 import com.cesmac.tarefa.api.integracao.ContainersAbstractIT;
 import com.cesmac.tarefa.api.integracao.dto.EntidadeGenericaTestDTO;
+import com.cesmac.tarefa.api.shared.dto.GrupoDTO;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
 import com.cesmac.tarefa.api.shared.uteis.ObjectMapperUtil;
 import io.restassured.http.ContentType;
@@ -46,7 +47,7 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
                 .contentType(ContentType.JSON)
                 .body(ObjectMapperUtil.asJsonString(request))
                 .when()
-                .post("/api/tarefa/grupo/1")
+                .post("/api/tarefa")
                 .then()
                 .log()
                 .ifValidationFails()
@@ -67,7 +68,7 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
                 .contentType(ContentType.JSON)
                 .body(ObjectMapperUtil.asJsonString(request))
                 .when()
-                .post("/api/tarefa/grupo/1")
+                .post("/api/tarefa")
                 .then()
                 .log()
                 .ifValidationFails()
@@ -88,7 +89,7 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
                 .contentType(ContentType.JSON)
                 .body(ObjectMapperUtil.asJsonString(request))
                 .when()
-                .post("/api/tarefa/grupo/1")
+                .post("/api/tarefa")
                 .then()
                 .log()
                 .ifValidationFails()
@@ -101,6 +102,10 @@ public class CadastrarTarefaTest extends ContainersAbstractIT {
     }
 
     private TarefaDTO tarefaRequest() {
-        return TarefaDTO.builder().titulo("Tarefa Nova").descricao("Desc Teste Nova").build();
+        return TarefaDTO.builder()
+                .titulo("Tarefa Nova")
+                .descricao("Desc Teste Nova")
+                .grupo(GrupoDTO.builder().id(1L).build())
+                .build();
     }
 }

@@ -1,12 +1,13 @@
 package com.cesmac.tarefa.api.shared.dto;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

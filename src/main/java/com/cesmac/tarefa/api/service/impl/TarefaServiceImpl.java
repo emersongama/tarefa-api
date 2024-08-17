@@ -1,40 +1,42 @@
 package com.cesmac.tarefa.api.service.impl;
 
-import static com.cesmac.tarefa.api.service.impl.validacoes.TarefaValidacoes.validarIdTarefa;
-import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.*;
-
 import com.cesmac.tarefa.api.configuration.exceptions.ValidacaoNotFoundException;
-import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.repository.TarefaRepository;
+import com.cesmac.tarefa.api.service.GrupoService;
 import com.cesmac.tarefa.api.service.TarefaService;
 import com.cesmac.tarefa.api.shared.EValidacao;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
 import com.cesmac.tarefa.api.shared.parse.TarefaParse;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+
+import static com.cesmac.tarefa.api.service.impl.validacoes.TarefaValidacoes.validarIdTarefa;
+import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoErroComMensagem;
+import static com.cesmac.tarefa.api.shared.uteis.ExecutarUtil.executarComandoComTratamentoSemRetornoComMensagem;
 
 @Service
 public class TarefaServiceImpl implements TarefaService {
 
     private final TarefaRepository tarefaRepository;
-    private final ModelMapper mapper;
+    private final GrupoService grupoService;
 
-    public TarefaServiceImpl(TarefaRepository tarefaRepository) {
+    public TarefaServiceImpl(TarefaRepository tarefaRepository, @Lazy GrupoService grupoService) {
         this.tarefaRepository = tarefaRepository;
-        this.mapper = new ModelMapper();
+        this.grupoService = grupoService;
     }
 
     @Override
-    public TarefaDTO salvar(TarefaDTO tarefaDTO, Grupo grupo) {
+    public TarefaDTO salvar(TarefaDTO tarefaDTO) {
         return executarComandoComTratamentoErroComMensagem(
                 () -> {
                     tarefaDTO.setId(null);
                     Tarefa tarefa = new TarefaParse().converterParaEntidade(tarefaDTO);
-                    tarefa.setGrupo(grupo);
+                    tarefa.setGrupo(grupoService.buscarPorId(tarefaDTO.getGrupo().getId()));
                     return new TarefaParse().converterParaDTO(this.tarefaRepository.save(tarefa));
                 },
                 "Erro ao cadastrar tarefa");

@@ -1,15 +1,15 @@
 package com.cesmac.tarefa.api.service;
 
-import com.cesmac.tarefa.api.entity.Grupo;
 import com.cesmac.tarefa.api.entity.Tarefa;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
-import java.util.List;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface TarefaService {
 
-    TarefaDTO salvar(TarefaDTO tarefa, Grupo grupo);
+    TarefaDTO salvar(TarefaDTO tarefa);
 
     Tarefa alterar(TarefaDTO tarefa, Long id);
 

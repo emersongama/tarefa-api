@@ -1,18 +1,18 @@
 package com.cesmac.tarefa.api.resource;
 
-import static com.cesmac.tarefa.api.shared.Constantes.URI.URI_TAREFA;
-
 import com.cesmac.tarefa.api.entity.Tarefa;
-import com.cesmac.tarefa.api.service.GrupoService;
 import com.cesmac.tarefa.api.service.TarefaService;
 import com.cesmac.tarefa.api.shared.dto.TarefaDTO;
-import java.io.Serializable;
-import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.Serializable;
+import java.util.List;
+
+import static com.cesmac.tarefa.api.shared.Constantes.URI.URI_TAREFA;
 
 @RestController
 @RequestMapping(URI_TAREFA)
@@ -21,14 +21,9 @@ public class TarefaResource implements Serializable {
 
     private final TarefaService tarefaService;
 
-    private final GrupoService grupoService;
-
-    @PostMapping("/grupo/{idGrupo}")
-    public ResponseEntity<TarefaDTO> salvar(
-            @Valid @RequestBody TarefaDTO dto, @PathVariable Long idGrupo) {
-        return new ResponseEntity<>(
-                this.tarefaService.salvar(dto, grupoService.buscarPorId(idGrupo)),
-                HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<TarefaDTO> salvar(@Valid @RequestBody TarefaDTO dto) {
+        return new ResponseEntity<>(this.tarefaService.salvar(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
